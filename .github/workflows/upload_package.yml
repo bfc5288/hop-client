@@ -1,31 +1,32 @@
 name: Upload to Package Repositories
 
-on:
-  push:
-    tags:
-      - 'v*'
+# on:
+#   push:
+#     tags:
+#       - 'v*'
+on: [push]
 
 jobs:
-  UploadPyPI:
-    runs-on: ubuntu-latest
+  # UploadPyPI:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.6'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install setuptools wheel twine
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USER_scimma }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PW_scimma }}
-      run: |
-        python3 setup.py sdist bdist_wheel
-        python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/* -u $TWINE_USERNAME -p $TWINE_PASSWORD
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v1
+  #     with:
+  #       python-version: '3.6'
+  #   - name: Install dependencies
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install setuptools wheel twine
+  #   - name: Build and publish
+  #     env:
+  #       TWINE_USERNAME: ${{ secrets.PYPI_USER_scimma }}
+  #       TWINE_PASSWORD: ${{ secrets.PYPI_PW_scimma }}
+  #     run: |
+  #       python3 setup.py sdist bdist_wheel
+  #       python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/* -u $TWINE_USERNAME -p $TWINE_PASSWORD
 
   UploadConda:
     runs-on: ubuntu-latest
@@ -60,9 +61,12 @@ jobs:
 
     - name: Build package and upload to Anaconda
       env:
-        CONDA_USERNAME: ${{ secrets.CONDA_USER_scimma }}
-        CONDA_PASSWORD: ${{ secrets.CONDA_PW_scimma }}
-        CONDA_ORG_NAME: 'scimma'
+        CONDA_USERNAME: ${{ secrets.CONDA_USER_bfc }}
+        CONDA_PASSWORD: ${{ secrets.CONDA_PW_bfc }}
+        CONDA_ORG_NAME: 'BFC_TestOrg'
+        # CONDA_USERNAME: ${{ secrets.CONDA_USER_scimma }}
+        # CONDA_PASSWORD: ${{ secrets.CONDA_PW_scimma }}
+        # CONDA_ORG_NAME: 'scimma'
       run: |
         conda config --set anaconda_upload yes  #uploads on build
         anaconda login --username $CONDA_USERNAME --password $CONDA_PASSWORD

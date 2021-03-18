@@ -72,3 +72,6 @@ jobs:
         anaconda login --username $CONDA_USERNAME --password $CONDA_PASSWORD
         conda build . --user $CONDA_ORG_NAME
         anaconda logout
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
